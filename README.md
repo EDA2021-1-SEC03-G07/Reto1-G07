@@ -18,9 +18,9 @@ Este directorio contiene las pruebas realizadas a los TADs, Estructuras de Datos
 
 Nombres integrantes:
 
-1. Nicole Murillo Fonseca 202025521
+1. Req. 2 - Nicole Murillo Fonseca 202025521
 
-2. Mariana Diaz Arenas 202020993
+2. Req. 3 - Mariana Diaz Arenas 202020993
 
 Correos uniandes:
 
