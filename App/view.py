@@ -72,7 +72,7 @@ while True:
 
     elif int(inputs[0]) == 2:
         pass
-
+    
     else:
         sys.exit(0)
 sys.exit(0)
