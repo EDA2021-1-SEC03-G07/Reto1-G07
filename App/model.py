@@ -37,12 +37,66 @@ los mismos.
 
 # Construccion de modelos
 
+def newCatalog():
+
+    catalog = {"videos" : None, "categories" : None}
+    catalog["videos"] = lt.newList('ARRAY_LIST', cmpfunction=comparevideos)
+    catalog["categories"] = lt.newList('ARRAY_LIST', cmpfunction=comparecategories)
+
+    return catalog 
+
 # Funciones para agregar informacion al catalogo
 
+def addVideo(catalog, videoname):
+
+    lt.addLast(catalog["videos"], videoname)
+    
+def addCategory(catalog, category):
+
+    c = newCategory(category["name"], category["id"])
+    lt.addLast(catalog["categories"], c)
+
+
 # Funciones para creacion de datos
+    
+
+def newCategory(name, id):
+
+    category = {"category_name": "", "category_id": ""}
+    category["category_name"] = name
+    category["category_id"] = id
+    return category
+
+
 
 # Funciones de consulta
 
+def firstVideo (catalog):
+
+    lista = catalog["videos"]
+    primer_video = lt.firstElement(lista)
+    title = primer_video["title"]
+    channel = primer_video["channel_title"]
+    trending_date = primer_video["trending_date"]
+    country = primer_video["country"]
+    views = primer_video["views"]
+    likes = primer_video["likes"]
+    dislikes = primer_video["dislikes"]
+
+    video = {"title": title, "channel_title": channel, "trending_date": trending_date, "country": country, "views": views, "likes": likes, "dislikes": dislikes}
+
+    return video
+
 # Funciones utilizadas para comparar elementos dentro de una lista
+
+def comparevideos(videotitle1, video):
+
+    if (videotitle1.lower() in video["title"].lower()):
+        return -1
+
+def comparecategories(name, category):
+
+    return (name==category["category_name"])
+
 
 # Funciones de ordenamiento
