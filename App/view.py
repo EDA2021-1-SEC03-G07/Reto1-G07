@@ -45,13 +45,24 @@ def printMenu():
 
 catalog = None
 
-def initCatalog():
+def initCatalog(type_representation):
 
-    return controller.initCatalog()
+    return controller.initCatalog(type_representation)
 
 def loadData(catalog):
 
     controller.loadData(catalog)
+
+def printResults(sortedVideos, sample=10):
+    size = lt.size(sortedVideos)
+    if size > sample:
+        print("Los primeros ", sample, " videos ordenados son: ")
+        i = 0
+        while i <= sample:
+            video = lt.getElement(sortedVideos, i)
+            print('Vistas: ' + video['views'] + ' Título: ' + video['title'] + ' Fecha de tendencia: ' + video['trending_date'] + ' Nombre del canal: ' + 
+            video['channel_title'] + ' Hora de publicación: ' + video['publish_time'] + ' Likes: ' + video['likes'] + ' Dislikes ' + video['dislikes'])
+            i +=1
 
 """
 Menu principal
@@ -60,8 +71,9 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
+        type_representation = str(input("Seleccione el tipo de representación de la lista: "))
         print("Cargando información de los archivos ....")
-        catalog = initCatalog()
+        catalog = initCatalog(type_representation)
         loadData(catalog)
         primer_video = controller.firstVideo(catalog)
         print('Videos cargados: ' + str(lt.size(catalog["videos"])))
@@ -71,7 +83,14 @@ while True:
         print(catalog["categories"])
 
     elif int(inputs[0]) == 2:
-        pass
+        size = input("Indique tamaño de la muestra: ")
+        if int(size) > lt.size(catalog['videos']):
+            print("El tamaño de la muestra excede el tamaño de los datos cargados en memoria")
+        else:
+            iterative = input("Indique el tipo de algoritmo de ordenamiento iterativo: ")
+            result = controller.sortVideosByViews(catalog, int(size), iterative)
+            print("Para la muestra de " , size, " elementos, el tiempo (mseg) es: ", str(result[0]))
+            printResults(result[1])
     
     else:
         sys.exit(0)

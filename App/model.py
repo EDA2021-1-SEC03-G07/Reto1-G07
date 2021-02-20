@@ -26,8 +26,11 @@
 
 
 import config as cf
+import time
 from DISClib.ADT import list as lt
-from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import shellsort as shell
+from DISClib.Algorithms.Sorting import selectionsort as selection
+from DISClib.Algorithms.Sorting import insertionsort as insertion
 assert cf
 
 """
@@ -37,11 +40,11 @@ los mismos.
 
 # Construccion de modelos
 
-def newCatalog():
+def newCatalog(type_representation):
 
     catalog = {"videos" : None, "categories" : None}
-    catalog["videos"] = lt.newList('ARRAY_LIST', cmpfunction=comparevideos)
-    catalog["categories"] = lt.newList('ARRAY_LIST', cmpfunction=comparecategories)
+    catalog["videos"] = lt.newList(type_representation, cmpfunction=comparevideos)
+    catalog["categories"] = lt.newList(type_representation, cmpfunction=comparecategories)
 
     return catalog 
 
@@ -98,5 +101,28 @@ def comparecategories(name, category):
 
     return (name==category["category_name"])
 
+def compVideoByViews(video1, video2):
+
+    return (float(video1['views']) < float(video2['views']))
+
 
 # Funciones de ordenamiento
+
+def sortVideosByViews (catalog, size, iterative):
+
+    if iterative == "selection":
+        order = selection
+    elif iterative == "shell":
+        order = shell
+    elif iterative == "inserction":
+        order = insertion
+
+    sub_list = lt.subList(catalog['videos'], 0, size)
+    sub_list = sub_list.copy()
+    start_time = time.process_time()
+    sorted_list = order.sort(sub_list, compVideoByViews)
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return elapsed_time_mseg, sorted_list
+
+
