@@ -53,7 +53,7 @@ def loadData(catalog):
 
     controller.loadData(catalog)
 
-def printResults(sortedVideos, sample=10):
+def printResults(sortedVideos, sample):
     size = lt.size(sortedVideos)
     if size > sample:
         print("Los primeros ", sample, " videos ordenados son: ")
@@ -63,6 +63,8 @@ def printResults(sortedVideos, sample=10):
             print('Vistas: ' + video['views'] + ' Título: ' + video['title'] + ' Fecha de tendencia: ' + video['trending_date'] + ' Nombre del canal: ' + 
             video['channel_title'] + ' Hora de publicación: ' + video['publish_time'] + ' Likes: ' + video['likes'] + ' Dislikes ' + video['dislikes'])
             i +=1
+    if size < sample:
+        print("El número indicado excede el tamaño de la muestra cargada.")
 
 """
 Menu principal
@@ -89,8 +91,9 @@ while True:
         else:
             iterative = input("Indique el tipo de algoritmo de ordenamiento iterativo: ")
             result = controller.sortVideosByViews(catalog, int(size), iterative)
+            sample = int(input("Indique el número n de elementos que desea en la lista: "))
             print("Para la muestra de " , size, " elementos, el tiempo (mseg) es: ", str(result[0]))
-            printResults(result[1])
+            printResults(result[1], sample)
     
     else:
         sys.exit(0)
