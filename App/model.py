@@ -114,7 +114,7 @@ def sortVideosByViews (catalog, size, iterative):
         order = selection
     elif iterative == "shell":
         order = shell
-    elif iterative == "inserction":
+    elif iterative == "insertion":
         order = insertion
 
     sub_list = lt.subList(catalog['videos'], 0, size)
