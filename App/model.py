@@ -117,7 +117,7 @@ def sortVideosByViews (catalog, size, iterative):
     elif iterative == "insertion":
         order = insertion
 
-    sub_list = lt.subList(catalog['videos'], 0, size)
+    sub_list = lt.subList(catalog['videos'], 1, size)
     sub_list = sub_list.copy()
     start_time = time.process_time()
     sorted_list = order.sort(sub_list, compVideoByViews)
