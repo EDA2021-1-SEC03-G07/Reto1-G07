@@ -31,6 +31,8 @@ from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as shell
 from DISClib.Algorithms.Sorting import selectionsort as selection
 from DISClib.Algorithms.Sorting import insertionsort as insertion
+from DISClib.Algorithms.Sorting import mergesort as merge
+from DISClib.Algorithms.Sorting import quicksort as quick
 assert cf
 
 """
@@ -96,10 +98,17 @@ def comparevideos(videotitle1, video):
 
     if (videotitle1.lower() in video["title"].lower()):
         return -1
+    else:
+        return 0
 
 def comparecategories(name, category):
 
-    return (name==category["category_name"])
+    if (name==category["category_name"]):
+        return 0
+    elif (name<category["category_name"]):
+        return -1
+    else:
+        return 1
 
 def compVideoByViews(video1, video2):
 
@@ -116,6 +125,10 @@ def sortVideosByViews (catalog, size, iterative):
         order = shell
     elif iterative == "insertion":
         order = insertion
+    elif iterative == "merge":
+        order = merge
+    elif iterative == "quick":
+        order = quick
 
     sub_list = lt.subList(catalog['videos'], 1, size)
     sub_list = sub_list.copy()
