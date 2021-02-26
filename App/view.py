@@ -91,7 +91,6 @@ while True:
             result = controller.sortVideosByViews(catalog, int(size), iterative)
             print("Para la muestra de " , size, " elementos, el tiempo (mseg) es: ", str(result[0]))
             printResults(result[1])
-            
     else:
         sys.exit(0)
 sys.exit(0)
