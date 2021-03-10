@@ -60,8 +60,8 @@ def printResults(sortedVideos, sample):
         i = 1
         while i <= sample:
             video = lt.getElement(sortedVideos, i)
-            print('Fecha de tendencia: ' + video['trending_date'] + ' Título: ' + video['title'] + ' Nombre del canal: ' + video['channel_title'] + ' Hora de publicación: ' + 
-            video['publish_time'] + ' Vistas: ' + video['views'] + ' Likes: ' + video['likes'] + ' Dislikes: ' + video['dislikes'])
+            print('Fecha de tendencia: ' + video['trending_date'] + ', Título: ' + video['title'] + ', Nombre del canal: ' + video['channel_title'] + ', Hora de publicación: ' + 
+            video['publish_time'] + ', Vistas: ' + video['views'] + ', Likes: ' + video['likes'] + ', Dislikes: ' + video['dislikes'])
             i +=1
 
 def printResults2(sortedVideos, sample):
@@ -70,8 +70,8 @@ def printResults2(sortedVideos, sample):
         i = 1
         while i <= sample:
             video = lt.getElement(sortedVideos, i)
-            print('Título: ' + video['title'] + ' Nombre del canal: ' + video['channel_title'] + ' Hora de publicación: ' + video['publish_time'] + ' Vistas: ' + video['views'] +
-            ' Likes: ' + video['likes'] + ' Dislikes: ' + video['dislikes'] + ' Tags: ' + video['tags'])
+            print('Título: ' + video['title'] + ', Nombre del canal: ' + video['channel_title'] + ', Hora de publicación: ' + video['publish_time'] + ', Vistas: ' + video['views'] +
+            ', Likes: ' + video['likes'] + ', Dislikes: ' + video['dislikes'] + ', Tags: ' + video['tags'] + ", País: " + video["country"])
             i +=1
 
 """
@@ -129,8 +129,9 @@ while True:
             print("El tamaño de la muestra excede el tamaño de los datos cargados en memoria")
         else:
             tag = str(input("Indique el tag de interes: "))
+            country = str(input("Indique el país de los videos: "))
             sample = int(input("Indique el número n de elementos en la lista: "))
-            result = controller.sortVideosLikesTag(catalog, size, tag)
+            result = controller.sortVideosLikesTag(catalog, size, tag, country)
             print("Los " + str(sample) + " videos con más likes y con el tag " + tag + " son: ")
             printResults2(result, sample)
 

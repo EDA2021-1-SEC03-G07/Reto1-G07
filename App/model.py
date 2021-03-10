@@ -162,8 +162,39 @@ def sortVideosCountryTrending (catalog, size, country):
             lt.addLast(sublistcountries, video)
 
     sorted_list_titles = merge.sort(sublistcountries, compVideoByTitle)
+
+    video_id = ""
+    days = 0
+    days_max = 0
+    video_id_max = "" 
+    channel = ""
+    channel_max = ""
+    title = ""
+    title_max = ""
+
+    for video in sorted_list_titles["elements"]:
+        idNumber = video["video_id"]
+
+        if video_id != "#NAME":
+            if video_id == idNumber:
+                days += 1
+            
+            else:
+                if days >= days_max:
+                    days_max = days
+                    video_id_max = video_id
+                    channel_max = channel
+                    title_max = title
+                video_id = video["video_id"]
+                channel = video["channel_title"]
+                title = video["title"]
+                days = 1
+
+    result = ("Titulo: " + str(title_max) + ", Nombre del canal: " + str(channel_max) + 
+    ", País: " + str(country) + ", Días: " + str(days_max) )
+
+    return result
     
-    return sorted_list_titles
 
 
 def sortVideosCategoryTrending (catalog, size, category):
@@ -173,7 +204,7 @@ def sortVideosCategoryTrending (catalog, size, category):
     for element in catalog["categories"]["elements"]:
         category_name = (element["category_name"]).lstrip(" ")
 
-        if category_name == category:
+        if (category_name.lower()) == (category.lower()):
             category_id = element["category_id"]
 
     for video in catalog["videos"]["elements"]:
@@ -182,25 +213,30 @@ def sortVideosCategoryTrending (catalog, size, category):
 
     sorted_list = merge.sort(sublistcategories,compVideoByTitle)
 
-    title = ""
+    video_id = ""
     days = 0
     days_max = 0
-    title_max = "" 
+    video_id_max = "" 
     channel = ""
     channel_max = ""
+    title = ""
+    title_max = ""
 
     for video in sorted_list["elements"]:
-        titleName = video["title"]
-        if title == titleName:
+        idNumber = video["video_id"]
+
+        if video_id == idNumber:
             days += 1
             
         else:
-            if days > days_max:
+            if days >= days_max:
                 days_max = days
-                title_max = title
+                video_id_max = video_id
                 channel_max = channel
-            title = video["title"]
+                title_max = title
+            video_id = video["video_id"]
             channel = video["channel_title"]
+            title = video["title"]
             days = 1
 
     result = ("Titulo: " + str(title_max) + ", Nombre del canal: " + str(channel_max) + 
@@ -209,15 +245,22 @@ def sortVideosCategoryTrending (catalog, size, category):
     return result
 
 
-def sortVideosLikesTag(catalog, size, tag):
+def sortVideosLikesTag(catalog, size, tag, country):
 
     sublist_tags = lt.newList("ARRAY_LIST")
 
     for video in catalog["videos"]["elements"]:
-        if tag in video["tags"]:
+        if str(tag.lower()) in str(video["tags"].lower()):
             lt.addLast(sublist_tags, video)
 
-    sorted_list_likes = merge.sort(sublist_tags, compVideoByLikes)
+    sublist_countries = lt.newList("ARRAY_LIST")
+
+    for video in sublist_tags["elements"]:
+        if (video["country"].lower()) == (country.lower()):
+            lt.addLast(sublist_countries, video)
+
+
+    sorted_list_likes = merge.sort(sublist_countries, compVideoByLikes)
 
     return sorted_list_likes
 
