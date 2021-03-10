@@ -80,3 +80,8 @@ def sortVideosCountryTrending (catalog, size,country):
 def sortVideosLikesTag(catalog, size, tag):
 
     return model.sortVideosLikesTag(catalog, size, tag)
+
+def sortVideosCategoryTrending (catalog, size, category):
+
+    return model.sortVideosCategoryTrending (catalog, size, category)
+

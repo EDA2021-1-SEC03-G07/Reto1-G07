@@ -166,6 +166,49 @@ def sortVideosCountryTrending (catalog, size, country):
     return sorted_list_titles
 
 
+def sortVideosCategoryTrending (catalog, size, category):
+
+    sublistcategories = lt.newList("ARRAY_LIST")
+
+    for element in catalog["categories"]["elements"]:
+        category_name = (element["category_name"]).lstrip(" ")
+
+        if category_name == category:
+            category_id = element["category_id"]
+
+    for video in catalog["videos"]["elements"]:
+        if video["category_id"] == category_id:
+            lt.addLast(sublistcategories, video)
+
+    sorted_list = merge.sort(sublistcategories,compVideoByTitle)
+
+    title = ""
+    days = 0
+    days_max = 0
+    title_max = "" 
+    channel = ""
+    channel_max = ""
+
+    for video in sorted_list["elements"]:
+        titleName = video["title"]
+        if title == titleName:
+            days += 1
+            
+        else:
+            if days > days_max:
+                days_max = days
+                title_max = title
+                channel_max = channel
+            title = video["title"]
+            channel = video["channel_title"]
+            days = 1
+
+    result = ("Titulo: " + str(title_max) + ", Nombre del canal: " + str(channel_max) + 
+    ", Id de la categoria: " + str(category_id) + ", Días: " + str(days_max) )
+
+    return result
+
+
 def sortVideosLikesTag(catalog, size, tag):
 
     sublist_tags = lt.newList("ARRAY_LIST")
@@ -177,6 +220,8 @@ def sortVideosLikesTag(catalog, size, tag):
     sorted_list_likes = merge.sort(sublist_tags, compVideoByLikes)
 
     return sorted_list_likes
+
+
 
 
 

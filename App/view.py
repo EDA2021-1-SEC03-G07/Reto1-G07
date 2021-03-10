@@ -112,6 +112,16 @@ while True:
             country = str(input("Indique el país de los videos: "))
             result = controller.sortVideosCountryTrending (catalog, size, country)
             print(result)
+    
+    elif int(inputs[0]) == 4:
+        size = input("Indique tamaño de la muestra: ")
+        if int(size) > lt.size(catalog['videos']):
+            print("El tamaño de la muestra excede el tamaño de los datos cargados en memoria")
+        else:
+            category = str(input("Indique la categoría de los videos: "))
+            result = controller.sortVideosCategoryTrending (catalog, size, category)
+            print("El video más trending para la categoría " + category + " es: ")
+            print(result)
 
     elif int(inputs[0]) == 5:
         size = input("Indique tamaño de la muestra: ")
