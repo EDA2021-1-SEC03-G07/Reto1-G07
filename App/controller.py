@@ -59,9 +59,9 @@ def loadCategories(catalog):
 
 # Funciones de ordenamiento
 
-def sortVideosByViews(catalog, size, iterative):
+def sortVideosByViews(catalog, size, category, country):
     
-    return model.sortVideosByViews(catalog, size, iterative)
+    return model.sortVideosByViews(catalog, size, category, country)
 
 # Funciones de consulta sobre el catálogo
 
@@ -70,3 +70,13 @@ def firstVideo(catalog):
     firstvideo = model.firstVideo(catalog)
 
     return firstvideo
+
+
+def sortVideosCountryTrending (catalog, size,country):
+
+    return model.sortVideosCountryTrending (catalog, size, country)
+
+
+def sortVideosLikesTag(catalog, size, tag):
+
+    return model.sortVideosLikesTag(catalog, size, tag)

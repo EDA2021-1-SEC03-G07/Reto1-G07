@@ -37,10 +37,10 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- Videos con más views en un país determinado")
+    print("2- Videos n con más views en un país determinado")
     print("3- Video trending por más días en un país determinado")
     print("4- Video trending por más días para una categoría específica")
-    print("5- Videos diferentes con más likes en un país con un tag específico")
+    print("5- Videos n con más likes y con un tag específico")
     print("0- Salir")
 
 catalog = None
@@ -53,15 +53,25 @@ def loadData(catalog):
 
     controller.loadData(catalog)
 
-def printResults(sortedVideos, sample=10):
+def printResults(sortedVideos, sample):
     size = lt.size(sortedVideos)
     if size > sample:
         print("Los primeros ", sample, " videos ordenados son: ")
         i = 1
         while i <= sample:
             video = lt.getElement(sortedVideos, i)
-            print('Vistas: ' + video['views'] + ' Título: ' + video['title'] + ' Fecha de tendencia: ' + video['trending_date'] + ' Nombre del canal: ' + 
-            video['channel_title'] + ' Hora de publicación: ' + video['publish_time'] + ' Likes: ' + video['likes'] + ' Dislikes ' + video['dislikes'])
+            print('Fecha de tendencia: ' + video['trending_date'] + ' Título: ' + video['title'] + ' Nombre del canal: ' + video['channel_title'] + ' Hora de publicación: ' + 
+            video['publish_time'] + ' Vistas: ' + video['views'] + ' Likes: ' + video['likes'] + ' Dislikes: ' + video['dislikes'])
+            i +=1
+
+def printResults2(sortedVideos, sample):
+    size = lt.size(sortedVideos)
+    if size > sample:
+        i = 1
+        while i <= sample:
+            video = lt.getElement(sortedVideos, i)
+            print('Título: ' + video['title'] + ' Nombre del canal: ' + video['channel_title'] + ' Hora de publicación: ' + video['publish_time'] + ' Vistas: ' + video['views'] +
+            ' Likes: ' + video['likes'] + ' Dislikes: ' + video['dislikes'] + ' Tags: ' + video['tags'])
             i +=1
 
 """
@@ -87,10 +97,33 @@ while True:
         if int(size) > lt.size(catalog['videos']):
             print("El tamaño de la muestra excede el tamaño de los datos cargados en memoria")
         else:
-            iterative = input("Indique el tipo de algoritmo de ordenamiento iterativo: ")
-            result = controller.sortVideosByViews(catalog, int(size), iterative)
+            sample = int(input("Indique el número n de elementos en la lista: "))
+            category = str(input("Indique la categoría de los videos: "))
+            country = str(input("Indique el país de los videos: "))
+            result = controller.sortVideosByViews(catalog, int(size), category, country)
             print("Para la muestra de " , size, " elementos, el tiempo (mseg) es: ", str(result[0]))
-            printResults(result[1])
+            printResults(result[1], sample)
+
+    elif int(inputs[0]) == 3:
+        size = input("Indique tamaño de la muestra: ")
+        if int(size) > lt.size(catalog['videos']):
+            print("El tamaño de la muestra excede el tamaño de los datos cargados en memoria")
+        else:
+            country = str(input("Indique el país de los videos: "))
+            result = controller.sortVideosCountryTrending (catalog, size, country)
+            print(result)
+
+    elif int(inputs[0]) == 5:
+        size = input("Indique tamaño de la muestra: ")
+        if int(size) > lt.size(catalog['videos']):
+            print("El tamaño de la muestra excede el tamaño de los datos cargados en memoria")
+        else:
+            tag = str(input("Indique el tag de interes: "))
+            sample = int(input("Indique el número n de elementos en la lista: "))
+            result = controller.sortVideosLikesTag(catalog, size, tag)
+            print("Los " + str(sample) + " videos con más likes y con el tag " + tag + " son: ")
+            printResults2(result, sample)
+
     else:
         sys.exit(0)
 sys.exit(0)

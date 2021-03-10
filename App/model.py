@@ -112,30 +112,84 @@ def comparecategories(name, category):
 
 def compVideoByViews(video1, video2):
 
-    return (float(video1['views']) < float(video2['views']))
+    return (float(video1['views']) > float(video2['views']))
+
+def compVideoByTitle (video1, video2):
+
+    return (str(video1['title']) < str(video2['title']))
+
+def compVideoByLikes(video1, video2):
+
+    return (float(video1['likes']) > float(video2['likes']))
 
 
 # Funciones de ordenamiento
 
-def sortVideosByViews (catalog, size, iterative):
 
-    if iterative == "selection":
-        order = selection
-    elif iterative == "shell":
-        order = shell
-    elif iterative == "insertion":
-        order = insertion
-    elif iterative == "merge":
-        order = merge
-    elif iterative == "quick":
-        order = quick
+def sortVideosByViews (catalog, size, category, country):
 
-    sub_list = lt.subList(catalog['videos'], 1, size)
-    sub_list = sub_list.copy()
+    sublistcategories = lt.newList("ARRAY_LIST")
+
+    for element in catalog["categories"]["elements"]:
+        category_name = (element["category_name"]).lstrip(" ")
+
+        if category_name == category:
+            category_id = element["category_id"]
+
+    for video in catalog["videos"]["elements"]:
+        if video["category_id"] == category_id:
+            lt.addLast(sublistcategories, video)
+
+    sublistcountries = lt.newList("ARRAY_LIST")
+
+    for video in sublistcategories["elements"]:
+        if video["country"] == country:
+            lt.addLast(sublistcountries, video)
+
     start_time = time.process_time()
-    sorted_list = order.sort(sub_list, compVideoByViews)
+    sorted_list = merge.sort(sublistcountries, compVideoByViews)
     stop_time = time.process_time()
     elapsed_time_mseg = (stop_time - start_time)*1000
     return elapsed_time_mseg, sorted_list
+
+
+def sortVideosCountryTrending (catalog, size, country):
+
+    sublistcountries = lt.newList("ARRAY_LIST")
+
+    for video in catalog["videos"]["elements"]:
+        if video["country"] == country:
+            lt.addLast(sublistcountries, video)
+
+    sorted_list_titles = merge.sort(sublistcountries, compVideoByTitle)
+    
+    return sorted_list_titles
+
+
+def sortVideosLikesTag(catalog, size, tag):
+
+    sublist_tags = lt.newList("ARRAY_LIST")
+
+    for video in catalog["videos"]["elements"]:
+        if tag in video["tags"]:
+            lt.addLast(sublist_tags, video)
+
+    sorted_list_likes = merge.sort(sublist_tags, compVideoByLikes)
+
+    return sorted_list_likes
+
+
+
+    
+
+   
+
+
+    
+
+    
+
+
+
 
 
