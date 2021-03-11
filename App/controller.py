@@ -30,9 +30,9 @@ El controlador se encarga de mediar entre la vista y el modelo.
 
 # Inicialización del Catálogo de libros
 
-def initCatalog(type_representation):
+def initCatalog():
 
-    catalog = model.newCatalog(type_representation)
+    catalog = model.newCatalog()
     return catalog
 
 # Funciones para la carga de datos
@@ -59,9 +59,9 @@ def loadCategories(catalog):
 
 # Funciones de ordenamiento
 
-def sortVideosByViews(catalog, size, category, country):
+def sortVideosByViews(catalog, category, country):
     
-    return model.sortVideosByViews(catalog, size, category, country)
+    return model.sortVideosByViews(catalog, category, country)
 
 # Funciones de consulta sobre el catálogo
 
@@ -71,17 +71,16 @@ def firstVideo(catalog):
 
     return firstvideo
 
+def sortVideosCountryTrending (catalog,country):
 
-def sortVideosCountryTrending (catalog, size,country):
-
-    return model.sortVideosCountryTrending (catalog, size, country)
+    return model.sortVideosCountryTrending (catalog, country)
 
 
-def sortVideosLikesTag(catalog, size, tag, country):
+def sortVideosLikesTag(catalog, tag, country):
 
-    return model.sortVideosLikesTag(catalog, size, tag, country)
+    return model.sortVideosLikesTag(catalog, tag, country)
 
-def sortVideosCategoryTrending (catalog, size, category):
+def sortVideosCategoryTrending (catalog, category):
 
-    return model.sortVideosCategoryTrending (catalog, size, category)
+    return model.sortVideosCategoryTrending (catalog, category)
 

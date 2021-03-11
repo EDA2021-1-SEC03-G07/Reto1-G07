@@ -45,9 +45,9 @@ def printMenu():
 
 catalog = None
 
-def initCatalog(type_representation):
+def initCatalog():
 
-    return controller.initCatalog(type_representation)
+    return controller.initCatalog()
 
 def loadData(catalog):
 
@@ -81,9 +81,8 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
-        type_representation = str(input("Seleccione el tipo de representación de la lista: "))
         print("Cargando información de los archivos ....")
-        catalog = initCatalog(type_representation)
+        catalog = initCatalog()
         loadData(catalog)
         primer_video = controller.firstVideo(catalog)
         print('Videos cargados: ' + str(lt.size(catalog["videos"])))
@@ -93,47 +92,37 @@ while True:
         print(catalog["categories"])
 
     elif int(inputs[0]) == 2:
-        size = input("Indique tamaño de la muestra: ")
-        if int(size) > lt.size(catalog['videos']):
-            print("El tamaño de la muestra excede el tamaño de los datos cargados en memoria")
-        else:
-            sample = int(input("Indique el número n de elementos en la lista: "))
-            category = str(input("Indique la categoría de los videos: "))
-            country = str(input("Indique el país de los videos: "))
-            result = controller.sortVideosByViews(catalog, int(size), category, country)
-            print("Para la muestra de " , size, " elementos, el tiempo (mseg) es: ", str(result[0]))
-            printResults(result[1], sample)
+        sample = int(input("Indique el número n de elementos en la lista: "))
+        category = str(input("Indique la categoría de los videos: "))
+        country = str(input("Indique el país de los videos: "))
+        result = controller.sortVideosByViews(catalog, category, country)
+        print("Tiempo: " + str(result[0]))
+        print("Los " + str(sample) + " videos con más views en la categoría " + category + " de " +
+        country + "son: ") 
+        printResults(result[1], sample)
 
     elif int(inputs[0]) == 3:
-        size = input("Indique tamaño de la muestra: ")
-        if int(size) > lt.size(catalog['videos']):
-            print("El tamaño de la muestra excede el tamaño de los datos cargados en memoria")
-        else:
-            country = str(input("Indique el país de los videos: "))
-            result = controller.sortVideosCountryTrending (catalog, size, country)
-            print(result)
+        country = str(input("Indique el país de los videos: "))
+        result = controller.sortVideosCountryTrending (catalog, country)
+        print("Tiempo: " + str(result[0]))
+        print("El video más trending en " + country + " es: ")
+        print(result[1])
     
     elif int(inputs[0]) == 4:
-        size = input("Indique tamaño de la muestra: ")
-        if int(size) > lt.size(catalog['videos']):
-            print("El tamaño de la muestra excede el tamaño de los datos cargados en memoria")
-        else:
-            category = str(input("Indique la categoría de los videos: "))
-            result = controller.sortVideosCategoryTrending (catalog, size, category)
-            print("El video más trending para la categoría " + category + " es: ")
-            print(result)
+        category = str(input("Indique la categoría de los videos: "))
+        result = controller.sortVideosCategoryTrending (catalog, category)
+        print("Tiempo: " + str(result[0]))
+        print("El video más trending para la categoría " + category + " es: ")
+        print(result[1])
 
     elif int(inputs[0]) == 5:
-        size = input("Indique tamaño de la muestra: ")
-        if int(size) > lt.size(catalog['videos']):
-            print("El tamaño de la muestra excede el tamaño de los datos cargados en memoria")
-        else:
-            tag = str(input("Indique el tag de interes: "))
-            country = str(input("Indique el país de los videos: "))
-            sample = int(input("Indique el número n de elementos en la lista: "))
-            result = controller.sortVideosLikesTag(catalog, size, tag, country)
-            print("Los " + str(sample) + " videos con más likes y con el tag " + tag + " son: ")
-            printResults2(result, sample)
+        tag = str(input("Indique el tag de interes: "))
+        country = str(input("Indique el país de los videos: "))
+        sample = int(input("Indique el número n de elementos en la lista: "))
+        result = controller.sortVideosLikesTag(catalog, tag, country)
+        print("Tiempo: " + str(result[0]))
+        print("Los " + str(sample) + " videos con más likes y con el tag " + tag + " son: ")
+        printResults2(result[1], sample)
 
     else:
         sys.exit(0)

@@ -40,17 +40,25 @@ Se define la estructura de un catálogo de videos. El catálogo tendrá dos list
 los mismos.
 """
 
+
+
 # Construccion de modelos
 
-def newCatalog(type_representation):
+
+
+def newCatalog():
 
     catalog = {"videos" : None, "categories" : None}
-    catalog["videos"] = lt.newList(type_representation, cmpfunction=comparevideos)
-    catalog["categories"] = lt.newList(type_representation, cmpfunction=comparecategories)
+    catalog["videos"] = lt.newList("ARRAY_LIST", cmpfunction=comparevideos)
+    catalog["categories"] = lt.newList("ARRAY_LIST", cmpfunction=comparecategories)
 
     return catalog 
 
+
+
 # Funciones para agregar informacion al catalogo
+
+
 
 def addVideo(catalog, videoname):
 
@@ -62,8 +70,10 @@ def addCategory(catalog, category):
     lt.addLast(catalog["categories"], c)
 
 
+
 # Funciones para creacion de datos
     
+
 
 def newCategory(name, id):
 
@@ -75,6 +85,8 @@ def newCategory(name, id):
 
 
 # Funciones de consulta
+
+
 
 def firstVideo (catalog):
 
@@ -92,7 +104,11 @@ def firstVideo (catalog):
 
     return video
 
+
+
 # Funciones utilizadas para comparar elementos dentro de una lista
+
+
 
 def comparevideos(videotitle1, video):
 
@@ -116,17 +132,21 @@ def compVideoByViews(video1, video2):
 
 def compVideoByTitle (video1, video2):
 
-    return (str(video1['title']) < str(video2['title']))
+    return (str(video1['title']) > str(video2['title']))
 
 def compVideoByLikes(video1, video2):
 
     return (float(video1['likes']) > float(video2['likes']))
 
 
+
 # Funciones de ordenamiento
 
 
-def sortVideosByViews (catalog, size, category, country):
+
+def sortVideosByViews (catalog, category, country):
+
+    start_time = time.process_time()
 
     sublistcategories = lt.newList("ARRAY_LIST")
 
@@ -146,14 +166,15 @@ def sortVideosByViews (catalog, size, category, country):
         if video["country"] == country:
             lt.addLast(sublistcountries, video)
 
-    start_time = time.process_time()
     sorted_list = merge.sort(sublistcountries, compVideoByViews)
     stop_time = time.process_time()
     elapsed_time_mseg = (stop_time - start_time)*1000
     return elapsed_time_mseg, sorted_list
 
 
-def sortVideosCountryTrending (catalog, size, country):
+def sortVideosCountryTrending (catalog, country):
+
+    start_time = time.process_time()
 
     sublistcountries = lt.newList("ARRAY_LIST")
 
@@ -180,11 +201,11 @@ def sortVideosCountryTrending (catalog, size, country):
                 days += 1
             
             else:
-                if days >= days_max:
+                if days > days_max:
                     days_max = days
                     video_id_max = video_id
                     channel_max = channel
-                    title_max = title
+                    title_max = title 
                 video_id = video["video_id"]
                 channel = video["channel_title"]
                 title = video["title"]
@@ -193,11 +214,16 @@ def sortVideosCountryTrending (catalog, size, country):
     result = ("Titulo: " + str(title_max) + ", Nombre del canal: " + str(channel_max) + 
     ", País: " + str(country) + ", Días: " + str(days_max) )
 
-    return result
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+
+    return elapsed_time_mseg, result
     
 
 
-def sortVideosCategoryTrending (catalog, size, category):
+def sortVideosCategoryTrending (catalog, category):
+
+    start_time = time.process_time()
 
     sublistcategories = lt.newList("ARRAY_LIST")
 
@@ -242,10 +268,15 @@ def sortVideosCategoryTrending (catalog, size, category):
     result = ("Titulo: " + str(title_max) + ", Nombre del canal: " + str(channel_max) + 
     ", Id de la categoria: " + str(category_id) + ", Días: " + str(days_max) )
 
-    return result
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+
+    return elapsed_time_mseg, result
 
 
-def sortVideosLikesTag(catalog, size, tag, country):
+def sortVideosLikesTag(catalog, tag, country):
+
+    start_time = time.process_time()
 
     sublist_tags = lt.newList("ARRAY_LIST")
 
@@ -262,7 +293,10 @@ def sortVideosLikesTag(catalog, size, tag, country):
 
     sorted_list_likes = merge.sort(sublist_countries, compVideoByLikes)
 
-    return sorted_list_likes
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+
+    return elapsed_time_mseg, sorted_list_likes
 
 
 
