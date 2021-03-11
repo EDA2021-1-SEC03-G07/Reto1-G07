@@ -33,6 +33,7 @@ from DISClib.Algorithms.Sorting import selectionsort as selection
 from DISClib.Algorithms.Sorting import insertionsort as insertion
 from DISClib.Algorithms.Sorting import mergesort as merge
 from DISClib.Algorithms.Sorting import quicksort as quick
+from DISClib.DataStructures import listiterator as it
 assert cf
 
 """
@@ -132,7 +133,7 @@ def compVideoByViews(video1, video2):
 
 def compVideoByTitle (video1, video2):
 
-    return (str(video1['title']) > str(video2['title']))
+    return (str(video1['title']) < str(video2['title']))
 
 def compVideoByLikes(video1, video2):
 
@@ -150,21 +151,27 @@ def sortVideosByViews (catalog, category, country):
 
     sublistcategories = lt.newList("ARRAY_LIST")
 
-    for element in catalog["categories"]["elements"]:
-        category_name = (element["category_name"]).lstrip(" ")
+    iterator1 = it.newIterator(catalog["categories"])
+    while it.hasNext(iterator1):
+        element = it.next(iterator1)
+        category_name = (element["category_name"]).lstrip()
 
-        if category_name == category:
+        if (category_name.lower()) == (category.lower()):
             category_id = element["category_id"]
 
-    for video in catalog["videos"]["elements"]:
-        if video["category_id"] == category_id:
-            lt.addLast(sublistcategories, video)
+    iterator2 = it.newIterator(catalog["videos"])
+    while it.hasNext(iterator2):
+        element = it.next(iterator2)
+        if element["category_id"] == category_id:
+            lt.addLast(sublistcategories, element)
 
     sublistcountries = lt.newList("ARRAY_LIST")
 
-    for video in sublistcategories["elements"]:
-        if video["country"] == country:
-            lt.addLast(sublistcountries, video)
+    iterator3 = it.newIterator(sublistcategories)
+    while it.hasNext(iterator3):
+        element = it.next(iterator3)
+        if (element["country"].lower()) == (country.lower()):
+            lt.addLast(sublistcountries, element)
 
     sorted_list = merge.sort(sublistcountries, compVideoByViews)
     stop_time = time.process_time()
@@ -178,9 +185,11 @@ def sortVideosCountryTrending (catalog, country):
 
     sublistcountries = lt.newList("ARRAY_LIST")
 
-    for video in catalog["videos"]["elements"]:
-        if video["country"] == country:
-            lt.addLast(sublistcountries, video)
+    iterator1 = it.newIterator(catalog["videos"])
+    while it.hasNext(iterator1):
+        element = it.next(iterator1)
+        if (element["country"].lower()) == (country.lower()):
+            lt.addLast(sublistcountries, element)
 
     sorted_list_titles = merge.sort(sublistcountries, compVideoByTitle)
 
@@ -193,8 +202,10 @@ def sortVideosCountryTrending (catalog, country):
     title = ""
     title_max = ""
 
-    for video in sorted_list_titles["elements"]:
-        idNumber = video["video_id"]
+    iterator2 = it.newIterator(sorted_list_titles)
+    while it.hasNext(iterator2):
+        element = it.next(iterator2)
+        idNumber = element["video_id"]
 
         if video_id != "#NAME":
             if video_id == idNumber:
@@ -205,14 +216,15 @@ def sortVideosCountryTrending (catalog, country):
                     days_max = days
                     video_id_max = video_id
                     channel_max = channel
-                    title_max = title 
-                video_id = video["video_id"]
-                channel = video["channel_title"]
-                title = video["title"]
+                    title_max = title
+                video_id = element["video_id"]
+                channel = element["channel_title"]
+                title = element["title"]
                 days = 1
 
     result = ("Titulo: " + str(title_max) + ", Nombre del canal: " + str(channel_max) + 
     ", País: " + str(country) + ", Días: " + str(days_max) )
+
 
     stop_time = time.process_time()
     elapsed_time_mseg = (stop_time - start_time)*1000
@@ -227,15 +239,20 @@ def sortVideosCategoryTrending (catalog, category):
 
     sublistcategories = lt.newList("ARRAY_LIST")
 
-    for element in catalog["categories"]["elements"]:
+    iterator1 = it.newIterator(catalog["categories"])
+    while it.hasNext(iterator1):
+        element = it.next(iterator1)
         category_name = (element["category_name"]).lstrip(" ")
 
         if (category_name.lower()) == (category.lower()):
             category_id = element["category_id"]
 
-    for video in catalog["videos"]["elements"]:
-        if video["category_id"] == category_id:
-            lt.addLast(sublistcategories, video)
+
+    iterator2 = it.newIterator(catalog["videos"])
+    while it.hasNext(iterator2):
+        element = it.next(iterator2)
+        if element["category_id"] == category_id:
+            lt.addLast(sublistcategories, element)
 
     sorted_list = merge.sort(sublistcategories,compVideoByTitle)
 
@@ -248,21 +265,23 @@ def sortVideosCategoryTrending (catalog, category):
     title = ""
     title_max = ""
 
-    for video in sorted_list["elements"]:
-        idNumber = video["video_id"]
+    iterator3 = it.newIterator(sorted_list)
+    while it.hasNext(iterator3):
+        element = it.next(iterator3)
+        idNumber = element["video_id"]
 
         if video_id == idNumber:
             days += 1
             
         else:
-            if days >= days_max:
+            if days > days_max:
                 days_max = days
                 video_id_max = video_id
                 channel_max = channel
                 title_max = title
-            video_id = video["video_id"]
-            channel = video["channel_title"]
-            title = video["title"]
+            video_id = element["video_id"]
+            channel = element["channel_title"]
+            title = element["title"]
             days = 1
 
     result = ("Titulo: " + str(title_max) + ", Nombre del canal: " + str(channel_max) + 
@@ -280,15 +299,20 @@ def sortVideosLikesTag(catalog, tag, country):
 
     sublist_tags = lt.newList("ARRAY_LIST")
 
-    for video in catalog["videos"]["elements"]:
-        if str(tag.lower()) in str(video["tags"].lower()):
-            lt.addLast(sublist_tags, video)
+
+    iterator1 = it.newIterator(catalog["videos"])
+    while it.hasNext(iterator1):
+        element = it.next(iterator1)
+        if str(tag.lower()) in str(element["tags"].lower()):
+            lt.addLast(sublist_tags, element)
 
     sublist_countries = lt.newList("ARRAY_LIST")
 
-    for video in sublist_tags["elements"]:
-        if (video["country"].lower()) == (country.lower()):
-            lt.addLast(sublist_countries, video)
+    iterator2 = it.newIterator(sublist_tags)
+    while it.hasNext(iterator2):
+        element = it.next(iterator2)
+        if (element["country"].lower()) == (country.lower()):
+            lt.addLast(sublist_countries, element)
 
 
     sorted_list_likes = merge.sort(sublist_countries, compVideoByLikes)
