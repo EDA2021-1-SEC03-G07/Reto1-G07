@@ -24,6 +24,7 @@ import config as cf
 import sys
 import controller
 from DISClib.ADT import list as lt
+import time
 assert cf
 
 
@@ -82,9 +83,13 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
+        start_time = time.process_time()
         catalog = initCatalog()
         loadData(catalog)
         primer_video = controller.firstVideo(catalog)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print("Tiempo: " + str(elapsed_time_mseg))
         print('Videos cargados: ' + str(lt.size(catalog["videos"])))
         print('El primer video es: ')
         print(primer_video)
